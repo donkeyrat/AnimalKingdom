@@ -613,6 +613,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\animalkingdom" />
+    <Content Include="Resources\weepingcopse" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
