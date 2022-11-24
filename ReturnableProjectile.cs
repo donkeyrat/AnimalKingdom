@@ -1,60 +1,45 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using Landfall.TABS;
 
 namespace AnimalKingdom
 {
     public class ReturnableProjectile : MonoBehaviour
     {
-        public void Start()
+        private void Start()
         {
-            weapon = transform.GetComponentInParent<Weapon>() ? transform.GetComponentInParent<Weapon>() : transform.root.GetComponent<Unit>().WeaponHandler.rightWeapon;
+            weapon = GetComponent<TeamHolder>().spawnerWeapon;
             returnObject = weapon.transform.FindChildRecursive(objectToReturnTo);
-        }
-        
-        public void Update()
-        {
-            if (returning)
-            {
-                if (counter >= 1f)
-                {
-                    weapon.GetComponent<DelayEvent>().Go();
-                    Destroy(gameObject);
-                    returning = false;
-                    return;
-                }
-                transform.position = Vector3.Lerp(beginPosition,
-                    returnObject.position, counter);
-                transform.rotation = Quaternion.Lerp(beginRotation,
-                    returnObject.rotation, counter);
-                counter += Time.deltaTime * speed;
-            }
         }
         
         public void Return()
         {
-            if (GetComponent<ProjectileStick>())
-            {
-                Destroy(GetComponent<ProjectileStick>());
-            }
-
-            beginPosition = transform.position;
-            beginRotation = transform.rotation;
-            
-            returning = true;
-            counter = 0f;
+            StartCoroutine(DoReturn());
         }
 
-        private float counter;
-        
-        private bool returning;
-
-        private Vector3 beginPosition;
-
-        private Quaternion beginRotation;
+        public IEnumerator DoReturn()
+        {
+            if (GetComponent<ProjectileStick>()) Destroy(GetComponent<ProjectileStick>());
+            
+            var t = 0f;
+            var beginPosition = transform.position;
+            var beginRotation = transform.rotation;
+            while (t < 1f)
+            {
+                transform.position = Vector3.Lerp(beginPosition,
+                    returnObject.position, t);
+                transform.rotation = Quaternion.Lerp(beginRotation,
+                    returnObject.rotation, t);
+                t += Time.deltaTime * speed;
+                yield return null;
+            }
+            weapon.GetComponent<DelayEvent>().Go();
+            Destroy(gameObject);
+        }
 
         private Transform returnObject;
 
-        private Weapon weapon;
+        private GameObject weapon;
 
         public string objectToReturnTo;
 

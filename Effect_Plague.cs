@@ -9,6 +9,7 @@ using Landfall.TABS.AI.Systems;
 using Landfall.TABS.GameMode;
 using UnityEngine.Events;
 using System.Linq;
+using System.Reflection;
 
 namespace AnimalKingdom
 {
@@ -82,6 +83,8 @@ namespace AnimalKingdom
             if (done) yield break;
             
             yield return new WaitForEndOfFrame();
+            
+            if (done) yield break;
     
             if (currentProgress >= 0.5f)
             {
@@ -119,7 +122,7 @@ namespace AnimalKingdom
     
         public void Revive()
         {
-            if (!done)
+            if (!done && unit.data.healthHandler.willBeRewived)
             {
                 done = true;
                 StartCoroutine(DoRevive());
@@ -128,10 +131,7 @@ namespace AnimalKingdom
     
         public IEnumerator DoRevive()
         {
-            if (!unit.data.Dead)
-            {
-                ServiceLocator.GetService<GameModeService>().CurrentGameMode.OnUnitDied(unit);
-            }
+            ServiceLocator.GetService<GameModeService>().CurrentGameMode.OnUnitDied(unit);
             
             Landfall.TABS.Team newTeam;
             if (zombieType == ZombificationType.Support) newTeam = unit.data.team;
@@ -140,7 +140,7 @@ namespace AnimalKingdom
             unit.Team = newTeam;
             
             unit.targetingPriorityMultiplier = reviveTargetingPriority;
-            
+
             var goe = unit.GetComponent<GameObjectEntity>();
             goe.EntityManager.RemoveComponent<IsDead>(goe.Entity);
             goe.EntityManager.AddComponent(goe.Entity, ComponentType.Create<UnitTag>());
@@ -149,11 +149,8 @@ namespace AnimalKingdom
                 Value = (int)unit.Team
             });
             World.Active.GetOrCreateManager<TeamSystem>().AddUnit(goe.Entity, unit.gameObject, unit.transform, unit.data.mainRig, unit.data, newTeam, unit, false);
-            
-            if (zombieType == ZombificationType.Support)
-            {
-                AddLerpProgress();
-            }
+
+            if (zombieType == ZombificationType.Support) AddLerpProgress();
             
             yield return new WaitForSeconds(reviveDelay);
     
@@ -209,19 +206,13 @@ namespace AnimalKingdom
 
             if (unit.GetComponentInChildren<EyeSpawner>())
             {
-                foreach (var eyeset in unit.GetComponentsInChildren<EyeSpawner>())
+                foreach (var eyeSet in unit.GetComponentsInChildren<EyeSpawner>())
                 {
-                    foreach (var eye in eyeset.spawnedEyes)
-                    {
-                        for (int i = 0; i < eye.open.transform.childCount; i++)
-                        {
-                            eye.open.transform.GetChild(i).transform.localScale = Vector3.zero;
-                        }
-
-                        Instantiate(reviveEye, eye.open.transform.position, eye.open.transform.rotation,
-                            eye.open.transform);
-                        eye.SetState(GooglyEye.EyeState.Open);
-                    }
+                    foreach (var eye in eyeSet.spawnedEyes) Destroy(eye.gameObject);
+                    eyeSet.spawnedEyes.Clear();
+                    
+                    eyeSet.eyeObject = reviveEye;
+                    eyeSet.GetType().GetMethod("Awake", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(eyeSet, new object[] { });
                 }
             }
              

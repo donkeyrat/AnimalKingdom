@@ -49,6 +49,7 @@
     <Compile Include="NuckSpear.cs" />
     <Compile Include="PBRevive.cs" />
     <Compile Include="PlagueBite.cs" />
+    <Compile Include="PlaguePhases.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReturnableProjectile.cs" />
     <Compile Include="RotationHandlerDragon.cs" />

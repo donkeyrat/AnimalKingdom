@@ -2,7 +2,10 @@
 using Landfall.TABS.GameMode;
 using System;
 using UnityEngine;
+using Unity.Entities;
 using HarmonyLib;
+using Landfall.TABS.AI;
+using Landfall.TABS.AI.Systems;
 
 namespace AnimalKingdom
 {
@@ -22,6 +25,10 @@ namespace AnimalKingdom
                 else if (!__instance.healthHandler.willBeRewived)
                 {
                     service.CurrentGameMode.OnUnitDied(__instance.unit);
+                }
+                else if (__instance.healthHandler.willBeRewived)
+                {
+                    __instance.unit.GetComponent<UnitAPI>().SetIsDead();
                 }
             }
             SetField(__instance, "dead", value);

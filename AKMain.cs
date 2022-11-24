@@ -15,8 +15,8 @@ namespace AnimalKingdom
         public AKMain()
         {
 	        var db = ContentDatabase.Instance();
-	        AssetBundle.LoadFromMemory(Properties.Resources.calderaceum);
-	        AssetBundle.LoadFromMemory(Properties.Resources.weepingcopse);
+	        //AssetBundle.LoadFromMemory(Properties.Resources.calderaceum);
+	        //AssetBundle.LoadFromMemory(Properties.Resources.weepingcopse);
 	        
 	        var newMapList = ((MapAsset[])typeof(LandfallContentDatabase).GetField("m_orderedMapAssets", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(db.LandfallContentDatabase)).ToList();
 	        var newMapDict = (Dictionary<DatabaseID, int>)typeof(LandfallContentDatabase).GetField("m_mapAssetIndexLookup", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(db.LandfallContentDatabase);
@@ -329,6 +329,6 @@ namespace AnimalKingdom
         
         public List<GameObject> newProjectiles = new List<GameObject>();
 
-        public static AssetBundle kermate = AssetBundle.LoadFromMemory(Properties.Resources.animalkingdom);
+        public static AssetBundle kermate;// = AssetBundle.LoadFromMemory(Properties.Resources.animalkingdom);
 	}
 }
