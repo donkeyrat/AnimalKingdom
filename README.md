@@ -1,4 +1,4 @@
-﻿# Animal Kingdom
+# Animal Kingdom
 
 This mod adds __FOUR__ new animals to a new faction, the __Animal Kingdom!__ It also adds three** new secret units, including a **DRAGON**, and **TWO** new maps, the Calderaceum and Weeping Copse!
 
@@ -91,9 +91,9 @@ __Myuu - [**Weeping Copse Music**](https://www.youtube.com/watch?v=kZRPA9LOJTg)_
 
 The new music for the mod was composed by *Voup*, a talented musician. You can view the tracks on Youtube below:
 
-[**Calderaceum Placement**](https://www.youtube.com/watch?v=smuX3Qeofgs)
+[**Calderaceum Placement**](https://www.youtube.com/watch?v=V1arZ6Oitpg)
 
-[**Calderaceum Battle**](https://www.youtube.com/watch?v=V1arZ6Oitpg)
+[**Calderaceum Battle**](https://www.youtube.com/watch?v=smuX3Qeofgs)
 
 ## Gallery
 
