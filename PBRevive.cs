@@ -171,9 +171,9 @@ namespace AnimalKingdom
 
             reviveEvent.Invoke();
             plaguePhases.SetRenderer();
-            
-            StartCoroutine(plaguePhases.PlayPartWithDelay(0.5f));
-            
+
+            plaguePhases.part.Play();
+
             Destroy(this);
         }
 

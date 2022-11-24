@@ -86,7 +86,7 @@ namespace AnimalKingdom
                 {
                     name = "Secrets"
                 };
-                Object.Instantiate(AKMain.kermate.LoadAsset<GameObject>("SecretUnlock_Dragon"), secrets.transform, true);
+                Object.Instantiate(AKMain.kermate.LoadAsset<GameObject>("GreaterDragon_Unlock"), secrets.transform, true);
             }
         }
 	}

@@ -15,8 +15,8 @@ namespace AnimalKingdom
         public AKMain()
         {
 	        var db = ContentDatabase.Instance();
-	        //AssetBundle.LoadFromMemory(Properties.Resources.calderaceum);
-	        //AssetBundle.LoadFromMemory(Properties.Resources.weepingcopse);
+	        AssetBundle.LoadFromMemory(Properties.Resources.calderaceum);
+	        AssetBundle.LoadFromMemory(Properties.Resources.weepingcopse);
 	        
 	        var newMapList = ((MapAsset[])typeof(LandfallContentDatabase).GetField("m_orderedMapAssets", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(db.LandfallContentDatabase)).ToList();
 	        var newMapDict = (Dictionary<DatabaseID, int>)typeof(LandfallContentDatabase).GetField("m_mapAssetIndexLookup", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(db.LandfallContentDatabase);
@@ -113,11 +113,15 @@ namespace AnimalKingdom
 				}
 			}
 			
-			foreach (var objecting in kermate.LoadAllAssets<GameObject>()) 
+			foreach (var objecting in kermate.LoadAllAssets<GameObject>())
             {
                 if (objecting != null) {
 
-                    if (objecting.GetComponent<Unit>()) newBases.Add(objecting);
+	                if (objecting.GetComponent<Unit>())
+	                {
+		                if (!objecting.GetComponent<Outline>()) objecting.AddComponent<Outline>().OutlineWidth = 1f;
+		                newBases.Add(objecting);
+	                }
                     else if (objecting.GetComponent<WeaponItem>()) {
                         newWeapons.Add(objecting);
                         int totalSubmeshes = 0;
@@ -329,6 +333,6 @@ namespace AnimalKingdom
         
         public List<GameObject> newProjectiles = new List<GameObject>();
 
-        public static AssetBundle kermate;// = AssetBundle.LoadFromMemory(Properties.Resources.animalkingdom);
+        public static AssetBundle kermate = AssetBundle.LoadFromMemory(Properties.Resources.animalkingdom);
 	}
 }
