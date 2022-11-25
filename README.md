@@ -1,4 +1,4 @@
-﻿
+
 # Animal Kingdom
 
 This mod adds __FOUR__ new animals to a new faction, the __Animal Kingdom!__ It also adds three** new secret units, including a **DRAGON**, and **TWO** new maps, the Calderaceum and Weeping Copse!
@@ -15,7 +15,7 @@ Some of the animals can be found in the Animal Kingdom faction, while the others
 
 | Unit | Description |
 |-|-|
-| **Keleken** | The Keleken is a terror bird which instills fear into its enemies with its terrible scream. |
+| **Kelenken** | The Kelenken is a terror bird which instills fear into its enemies with its terrible scream. |
 | **Smilodon** | A tame housecat that poses no harm whatsoever. It certainly does not sneak up on units and then pounce on them and eat them alive. Obviously. |
 | **Daeodon** | This deformed boar-looking creature swings units from side to side as it bites them, thrashing them around. It also looks very silly.  |
 | **Giant Bison** | The Giant Bison pummels any units in its path with a powerful, red-hot charge. Even its cousin, the Minotaur, is shaken by its power. |
@@ -88,8 +88,10 @@ The mod's [**Github**](https://github.com/donkeyrat/AnimalKingdom) is now the on
  - Improved the Greater Dragon's fire breath effects.
  - Improved the Greater Dragon's burning effects.
  - Fixed the Greater Dragon not being able to be unlocked.
+ - Fixed the Greater Dragon having a limited unlock distance.
  - Raised the Plague Bearer's neck.
  - Renamed the Nuckevalee to Nuckelavee.
+ - Renamed the Keleken to Kelenken.
 
 ## Credits
 
