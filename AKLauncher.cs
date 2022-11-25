@@ -2,7 +2,7 @@
 
 namespace AnimalKingdom
 {
-	[BepInPlugin("teamgrad.animalkingdom", "Animal Kingdom", "1.0.0")]
+	[BepInPlugin("teamgrad.animalkingdom", "Animal Kingdom", "1.0.3")]
 	public class AKLauncher : BaseUnityPlugin
 	{
 		public AKLauncher()

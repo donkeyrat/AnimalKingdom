@@ -1,3 +1,4 @@
+﻿
 # Animal Kingdom
 
 This mod adds __FOUR__ new animals to a new faction, the __Animal Kingdom!__ It also adds three** new secret units, including a **DRAGON**, and **TWO** new maps, the Calderaceum and Weeping Copse!
@@ -13,7 +14,7 @@ Some of the animals can be found in the Animal Kingdom faction, while the others
 ## Animal Kingdom Units
 
 | Unit | Description |
-|-|-|-|
+|-|-|
 | **Keleken** | The Keleken is a terror bird which instills fear into its enemies with its terrible scream. |
 | **Smilodon** | A tame housecat that poses no harm whatsoever. It certainly does not sneak up on units and then pounce on them and eat them alive. Obviously. |
 | **Daeodon** | This deformed boar-looking creature swings units from side to side as it bites them, thrashing them around. It also looks very silly.  |
@@ -23,9 +24,9 @@ Some of the animals can be found in the Animal Kingdom faction, while the others
 
 | Unit | Location | Description |
 |-|-|-|
-| ***NUCKEVALEE*** | *Weeping Copse* | The Devil of the Sea. Wielding a swordfish lochaber, it strides into battle, throwing its spear and calling it back. Its horse half can release a foul breath, sickening enemies to death. |
+| ***NUCKELAVEE*** | *Weeping Copse* | The Devil of the Sea. Wielding a swordfish lochaber, it strides into battle, throwing its spear and calling it back. Its horse half can release a foul breath, sickening enemies to death. |
 | ***PLAGUE BEARER*** | *Calderaceum* | A long-necked dinosaur with a serious illness. As the battle progresses, it gets sicker and sicker, and can spread its illness with a bloody vomit. When it dies, its sickness revives it, and it hangs on for a little longer, using its last strength to gain the ability to leap. |
-| ***GREATER DRAGON*** | *Simulation* | An old, experienced dragon, given life once again. From ages past it rises, with flames hot enough to scorch even giants. When angered, it takes flight, and slams down on armies below. Only the strongest of warriors may defeat it, or perhaps even the hero. To unlock it, you must defeat it yourself. |
+| ***GREATER DRAGON*** | *Medieval 1* | An old, experienced dragon, given life once again. From ages past it rises, with flames hot enough to scorch even giants. When angered, it takes flight, and slams down on armies below. Only the strongest of warriors may defeat it, or perhaps even the hero. To unlock it, you must defeat it yourself. |
 
 ## Maps
 
@@ -56,7 +57,7 @@ The mod's [**Github**](https://github.com/donkeyrat/AnimalKingdom) is now the on
  - Renamed the Terror Bird to Keleken.
  - Moved the Keleken to the Animal Kingdom faction.
 
-## 0.2.1
+### 0.2.1
 
  - Added an icon to the Animal Kingdom faction.
  - Moved the Greater Dragon's battle to Medieval 2.
@@ -72,6 +73,23 @@ The mod's [**Github**](https://github.com/donkeyrat/AnimalKingdom) is now the on
  - Added Weeping Copse map.
  - Reworked the Greater Dragon.
  - Fixed numerous bugs.
+
+### 1.0.1
+
+ - Fixed the Greater Dragon not being able to be unlocked.
+
+### 1.0.2
+
+ - Updated Thunderstore page.
+
+### 1.0.3
+
+ - Added aiming to the Greater Dragon's fire breath.
+ - Improved the Greater Dragon's fire breath effects.
+ - Improved the Greater Dragon's burning effects.
+ - Fixed the Greater Dragon not being able to be unlocked.
+ - Raised the Plague Bearer's neck.
+ - Renamed the Nuckevalee to Nuckelavee.
 
 ## Credits
 
