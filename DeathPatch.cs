@@ -26,10 +26,6 @@ namespace AnimalKingdom
                 {
                     service.CurrentGameMode.OnUnitDied(__instance.unit);
                 }
-                else if (__instance.healthHandler.willBeRewived)
-                {
-                    __instance.unit.GetComponent<UnitAPI>().SetIsDead();
-                }
             }
             SetField(__instance, "dead", value);
             return false;

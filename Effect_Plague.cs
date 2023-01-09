@@ -208,7 +208,11 @@ namespace AnimalKingdom
             {
                 foreach (var eyeSet in unit.GetComponentsInChildren<EyeSpawner>())
                 {
-                    foreach (var eye in eyeSet.spawnedEyes) Destroy(eye.gameObject);
+                    foreach (var eye in eyeSet.spawnedEyes) 
+                    {
+                        GooglyEyes.instance.eyes.Remove(eye);
+                        Destroy(eye.gameObject);
+                    }
                     eyeSet.spawnedEyes.Clear();
                     
                     eyeSet.eyeObject = reviveEye;
