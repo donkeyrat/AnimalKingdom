@@ -93,6 +93,15 @@ The mod's [**Github**](https://github.com/donkeyrat/AnimalKingdom) is now the on
  - Renamed the Nuckevalee to Nuckelavee.
  - Renamed the Keleken to Kelenken.
 
+### 1.0.4
+
+ - Added voice bundles to the Unit Creator.
+ - Nerfed the Greater Dragon's fire breath.
+ - Fixed the Greater Dragon flipping upside down while flying.
+ - Fixed the Greater Dragon's secret unlock spamming the debug log.
+ - Fixed the Greater Dragon's sound effects not playing.
+ - Fixed undead units having broken AI.
+
 ## Credits
 
 This mod is made by Team Grad, a mod team that aims to improve the game by adding new units, new features, and more!
@@ -105,7 +114,11 @@ __Harren Tonderen - Icon Artist__
 
 __Voup - Composer__
 
+__JAWarre74268801 - Icon Artist__
+
 __Myuu - [**Weeping Copse Music**](https://www.youtube.com/watch?v=kZRPA9LOJTg)__
+
+__Primal - Plague Bearer SFX__
 
 ## Music
 

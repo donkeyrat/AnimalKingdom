@@ -8,9 +8,6 @@ using Landfall.TABS.AI;
 using System.Reflection;
 using Landfall.TABS.GameMode;
 using System.Linq;
-using Landfall.TABS.AI.Components;
-using Landfall.TABS.AI.Components.Tags;
-using Landfall.TABS.AI.Systems;
 
 namespace AnimalKingdom
 {
@@ -41,7 +38,6 @@ namespace AnimalKingdom
             
             else if (unit.data.healthHandler.willBeRewived)
             {
-                Debug.Log("its doing what its supposed to");
                 unit.data.healthHandler.willBeRewived = false;
                 unit.data.healthHandler.Die();
                 Destroy(this);
@@ -53,14 +49,11 @@ namespace AnimalKingdom
             var effect = unit.GetComponentsInChildren<UnitEffectBase>().ToList().Find(x => x.effectID == 1984 || x.effectID == 1987);
             if (unit.data.health > 0f || effect || !unit.data.healthHandler.willBeRewived)
             {
-                Debug.Log("revive failed!");
                 unit.data.healthHandler.willBeRewived = false;
                 ServiceLocator.GetService<GameModeService>().CurrentGameMode.OnUnitDied(unit);
                 Destroy(this);
                 yield break;
             }
-            
-            Debug.Log("reviving!");
 
             preReviveEvent.Invoke();
             

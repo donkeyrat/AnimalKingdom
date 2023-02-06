@@ -194,7 +194,7 @@ namespace AnimalKingdom
                 }
             }
             
-            if (unit.data.GetComponent<StandingHandler>())
+            if (unit.data.GetComponent<StandingHandler>() && (unit.name.Contains("Humanoid") || unit.name.Contains("Stiffy") || unit.name.Contains("Blackbeard") || unit.name.Contains("Halfling")))
             {
                 var ran = unit.data.gameObject.AddComponent<RandomCharacterStats>();
                 ran.minStandingOffset = zombieStats.GetComponent<RandomCharacterStats>().minStandingOffset;

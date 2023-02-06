@@ -25,10 +25,6 @@ namespace AnimalKingdom
                 transform.GetChild(i).gameObject.layer = newMask;
             }
         }
-
-        private GameObject myClone;
-
-        private bool isClone;
         
         public int originalMask;
 

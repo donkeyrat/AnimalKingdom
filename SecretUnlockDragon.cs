@@ -56,7 +56,8 @@ public class SecretUnlockDragon : GameStateListener
 			return;
 		}
 		loopSource.volume = Mathf.Pow(m_unlockValue * 0.25f, 1.3f);
-		loopSource.pitch = 1f + 1f * m_unlockValue;
+		var pitch = 1f + 1f * m_unlockValue;
+		loopSource.pitch = pitch >= 0f ? pitch : 0f;
 		if (m_unlockValue > 0f || m_lookValue > 10f)
 		{
 			SetColor();

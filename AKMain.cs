@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using HarmonyLib;
 using DM;
+using Landfall.TABS.GameMode;
 
 namespace AnimalKingdom
 {
@@ -15,12 +16,12 @@ namespace AnimalKingdom
         public AKMain()
         {
 	        var db = ContentDatabase.Instance();
+	        
 	        AssetBundle.LoadFromMemory(Properties.Resources.calderaceum);
 	        AssetBundle.LoadFromMemory(Properties.Resources.weepingcopse);
 	        
 	        var newMapList = ((MapAsset[])typeof(LandfallContentDatabase).GetField("m_orderedMapAssets", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(db.LandfallContentDatabase)).ToList();
 	        var newMapDict = (Dictionary<DatabaseID, int>)typeof(LandfallContentDatabase).GetField("m_mapAssetIndexLookup", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(db.LandfallContentDatabase);
-
 	        foreach (var map in kermate.LoadAllAssets<MapAsset>()) 
 	        {
 		        newMapList.Add(map);
@@ -29,59 +30,58 @@ namespace AnimalKingdom
 
 	        typeof(LandfallContentDatabase).GetField("m_orderedMapAssets", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(db.LandfallContentDatabase, newMapList.ToArray());
 	        typeof(LandfallContentDatabase).GetField("m_mapAssetIndexLookup", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(db.LandfallContentDatabase, newMapDict);
-	        
+
 	        var factions = db.LandfallContentDatabase.GetFactions().ToList();
-			foreach (var fac in kermate.LoadAllAssets<Faction>())
-			{
-				var factionUnits = new List<UnitBlueprint>(fac.Units);
-				var newFactionUnits = (
-					from UnitBlueprint unit
-					in factionUnits
-					orderby unit.GetUnitCost()
-					select unit).ToList();
-				fac.Units = newFactionUnits.ToArray();
-				foreach (var vFac in factions)
-				{
-					if (fac.Entity.Name == vFac.Entity.Name + "_NEW")
-					{
-						var vFacUnits = new List<UnitBlueprint>(vFac.Units);
-						vFacUnits.AddRange(fac.Units);
-						var newUnits = (
-							from UnitBlueprint unit
-							in vFacUnits
-							orderby unit.GetUnitCost()
-							select unit).ToList();
-						vFac.Units = newUnits.ToArray();
-						Object.DestroyImmediate(fac);
-					}
-				}
-			}
+	        foreach (var fac in kermate.LoadAllAssets<Faction>())
+	        {
+		        var veryNewUnits = fac.Units.Where(x => x).OrderBy(x => x.GetUnitCost()).ToArray();
+		        fac.Units = veryNewUnits.ToArray();
+		        foreach (var vFac in factions) 
+		        {
+			        if (fac.Entity.Name == vFac.Entity.Name + "_NEW")
+			        {
+				        var vFacUnits = new List<UnitBlueprint>(vFac.Units);
+				        vFacUnits.AddRange(fac.Units);
+				        vFac.Units = vFacUnits.Where(x => x).OrderBy(x => x.GetUnitCost()).ToArray();
+
+				        Object.Destroy(fac);
+			        }
+		        }
+	        }
 			
-			foreach (var sb in kermate.LoadAllAssets<SoundBank>()) 
-			{
-				if (sb.name.Contains("Sound")) {
-					var vsb = ServiceLocator.GetService<SoundPlayer>().soundBank;
-					foreach (var sound in sb.Categories) { sound.categoryMixerGroup = vsb.Categories[0].categoryMixerGroup; }
-					var cat = vsb.Categories.ToList();
-					cat.AddRange(sb.Categories);
-					vsb.Categories = cat.ToArray();
-				}
-				if (sb.name.Contains("Music")) {
-					var vsb = ServiceLocator.GetService<MusicHandler>().bank;
-					var cat = vsb.Categories.ToList();
-					cat.AddRange(sb.Categories);
-					foreach (var categ in sb.Categories) {
-						foreach (var sound in categ.soundEffects) {
-							var song = new SongInstance();
-							song.clip = sound.clipTypes[0].clips[0];
-							song.soundEffectInstance = sound;
-							song.songRef = categ.categoryName + "/" + sound.soundRef;
-							ServiceLocator.GetService<MusicHandler>().m_songs.Add(song.songRef, song);
-						}
-					}
-					vsb.Categories = cat.ToArray();
-				}
-			}
+	        foreach (var sb in kermate.LoadAllAssets<SoundBank>()) 
+	        {
+		        if (sb.name.Contains("Sound")) 
+		        {
+			        var vsb = ServiceLocator.GetService<SoundPlayer>().soundBank;
+			        foreach (var sound in sb.Categories) sound.categoryMixerGroup = vsb.Categories[0].categoryMixerGroup;
+                    
+			        var cat = vsb.Categories.ToList();
+			        cat.AddRange(sb.Categories);
+			        vsb.Categories = cat.ToArray();
+		        }
+		        else if (sb.name.Contains("Music")) 
+		        {
+			        var vsb = ServiceLocator.GetService<MusicHandler>().bank;
+			        var cat = vsb.Categories.ToList();
+			        cat.AddRange(sb.Categories);
+			        foreach (var category in sb.Categories) 
+			        {
+				        foreach (var sound in category.soundEffects) 
+				        {
+					        var song = new SongInstance
+					        {
+						        clip = sound.clipTypes[0].clips[0],
+						        soundEffectInstance = sound,
+						        songRef = category.categoryName + "/" + sound.soundRef
+					        };
+
+					        ServiceLocator.GetService<MusicHandler>().m_songs.Add(song.songRef, song);
+				        }
+			        }
+			        vsb.Categories = cat.ToArray();
+		        }
+	        }
 			
 			new AKSceneManager();
 
@@ -99,73 +99,72 @@ namespace AnimalKingdom
 				foreach (var b in db.LandfallContentDatabase.GetWeapons().ToList()) { if (unit.RightWeapon != null && b.name == unit.RightWeapon.name) unit.RightWeapon = b; if (unit.LeftWeapon != null && b.name == unit.LeftWeapon.name) unit.LeftWeapon = b; }
 			}
 			
-			int startID = 37105;
-			foreach (var sprite in kermate.LoadAllAssets<Sprite>()) {
-
-				if (sprite.name.Contains("Icons_128x128")) {
-
-					var icon = Object.Instantiate(db.GetFactionIcon(db.LandfallContentDatabase.GetFactionIconIds().ToList()[0]));
-					icon.name = sprite.name;
-					icon.Entity.SetSpriteIcon(sprite);
-					icon.Entity.GUID = new DatabaseID(-2, startID);
-					startID++;
-					newFactionIcons.Add(icon);
-				}
-			}
+			foreach (var vb in kermate.LoadAllAssets<VoiceBundle>()) newVoiceBundles.Add(vb);
+			
+			foreach (var icon in kermate.LoadAllAssets<FactionIcon>()) newFactionIcons.Add(icon);
 			
 			foreach (var objecting in kermate.LoadAllAssets<GameObject>())
             {
-                if (objecting != null) {
-
-	                if (objecting.GetComponent<Unit>())
-	                {
-		                if (!objecting.GetComponent<Outline>()) objecting.AddComponent<Outline>().OutlineWidth = 1f;
-		                newBases.Add(objecting);
-	                }
-                    else if (objecting.GetComponent<WeaponItem>()) {
+                if (objecting != null) 
+                {
+                    foreach (var audio in objecting.GetComponentsInChildren<AudioSource>(true))
+                    {
+                        audio.outputAudioMixerGroup = ServiceLocator.GetService<GameModeService>().AudioSettings.AudioMixer.outputAudioMixerGroup;
+                    }
+                    
+                    if (objecting.GetComponent<Unit>()) newBases.Add(objecting);
+                    else if (objecting.GetComponent<WeaponItem>()) 
+                    {
                         newWeapons.Add(objecting);
                         int totalSubmeshes = 0;
-                        foreach (var rend in objecting.GetComponentsInChildren<MeshFilter>()) {
-                            if (rend.gameObject.activeSelf && rend.gameObject.activeInHierarchy && rend.mesh.subMeshCount > 0 && rend.GetComponent<MeshRenderer>() && rend.GetComponent<MeshRenderer>().enabled == true) {
-
+                        foreach (var rend in objecting.GetComponentsInChildren<MeshFilter>()) 
+                        {
+                            if (rend.gameObject.activeSelf && rend.gameObject.activeInHierarchy && rend.mesh.subMeshCount > 0 && rend.GetComponent<MeshRenderer>() && rend.GetComponent<MeshRenderer>().enabled) 
+                            {
                                 totalSubmeshes += rend.mesh.subMeshCount;
                             }
                         }
-                        foreach (var rend in objecting.GetComponentsInChildren<SkinnedMeshRenderer>()) {
-                            if (rend.gameObject.activeSelf && rend.sharedMesh.subMeshCount > 0 && rend.enabled) {
-
+                        foreach (var rend in objecting.GetComponentsInChildren<SkinnedMeshRenderer>()) 
+                        {
+                            if (rend.gameObject.activeSelf && rend.sharedMesh.subMeshCount > 0 && rend.enabled) 
+                            {
                                 totalSubmeshes += rend.sharedMesh.subMeshCount;
                             }
                         }
-                        if (totalSubmeshes != 0) {
+                        if (totalSubmeshes != 0) 
+                        {
                             float average = 1f / totalSubmeshes;
                             var averageList = new List<float>();
-                            for (int i = 0; i < totalSubmeshes; i++) { averageList.Add(average); }
+                            for (int i = 0; i < totalSubmeshes; i++) averageList.Add(average);
                             objecting.GetComponent<WeaponItem>().SubmeshArea = null;
                             objecting.GetComponent<WeaponItem>().SubmeshArea = averageList.ToArray();
                         }
                     }
                     else if (objecting.GetComponent<ProjectileEntity>()) newProjectiles.Add(objecting);
                     else if (objecting.GetComponent<SpecialAbility>()) newAbilities.Add(objecting);
-                    else if (objecting.GetComponent<PropItem>()) {
+                    else if (objecting.GetComponent<PropItem>() && objecting.GetComponent<PropItem>().ShowInEditor) 
+                    {
                         newProps.Add(objecting);
                         int totalSubmeshes = 0;
-                        foreach (var rend in objecting.GetComponentsInChildren<MeshFilter>()) {
-                            if (rend.gameObject.activeSelf && rend.gameObject.activeInHierarchy && rend.mesh.subMeshCount > 0 && rend.GetComponent<MeshRenderer>() && rend.GetComponent<MeshRenderer>().enabled == true) {
-
+                        foreach (var rend in objecting.GetComponentsInChildren<MeshFilter>()) 
+                        {
+                            if (rend.gameObject.activeSelf && rend.gameObject.activeInHierarchy && rend.mesh.subMeshCount > 0 && rend.GetComponent<MeshRenderer>() && rend.GetComponent<MeshRenderer>().enabled) 
+                            {
                                 totalSubmeshes += rend.mesh.subMeshCount;
                             }
                         }
-                        foreach (var rend in objecting.GetComponentsInChildren<SkinnedMeshRenderer>()) {
-                            if (rend.gameObject.activeSelf && rend.sharedMesh.subMeshCount > 0 && rend.enabled) {
-
+                        foreach (var rend in objecting.GetComponentsInChildren<SkinnedMeshRenderer>()) 
+                        {
+                            if (rend.gameObject.activeSelf && rend.sharedMesh.subMeshCount > 0 && rend.enabled) 
+                            {
                                 totalSubmeshes += rend.sharedMesh.subMeshCount;
                             }
                         }
-                        if (totalSubmeshes != 0) {
+                        if (totalSubmeshes != 0) 
+                        {
                             float average = 1f / totalSubmeshes;
                             var averageList = new List<float>();
-                            for (int i = 0; i < totalSubmeshes; i++) { averageList.Add(average); }
+                            for (int i = 0; i < totalSubmeshes; i++) averageList.Add(average);
                             objecting.GetComponent<PropItem>().SubmeshArea = null;
                             objecting.GetComponent<PropItem>().SubmeshArea = averageList.ToArray();
                         }
@@ -178,7 +177,7 @@ namespace AnimalKingdom
         
         public void AddContentToDatabase()
         {
-	        Dictionary<DatabaseID, UnityEngine.Object> nonStreamableAssets = (Dictionary<DatabaseID, UnityEngine.Object>)typeof(AssetLoader).GetField("m_nonStreamableAssets", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(ContentDatabase.Instance().AssetLoader);
+	        Dictionary<DatabaseID, Object> nonStreamableAssets = (Dictionary<DatabaseID, Object>)typeof(AssetLoader).GetField("m_nonStreamableAssets", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(ContentDatabase.Instance().AssetLoader);
 	        
             var db = ContentDatabase.Instance().LandfallContentDatabase;
             
