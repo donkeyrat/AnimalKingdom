@@ -17,7 +17,7 @@ namespace AnimalKingdom
 
         public void EnterStealth()
         {
-            transform.root.GetComponent<GameObjectEntity>().EntityManager.AddComponentData<IsDead>(transform.root.GetComponent<GameObjectEntity>().Entity, default(IsDead));
+            transform.root.GetComponent<GameObjectEntity>().EntityManager.AddComponentData<IsDead>(transform.root.GetComponent<GameObjectEntity>().Entity, default);
         }
 
         public void LeaveStealth()

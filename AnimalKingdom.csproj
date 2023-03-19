@@ -37,22 +37,13 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AKMaterialEvent.cs" />
-    <Compile Include="AKRandomChance.cs" />
-    <Compile Include="DeathPatch.cs" />
     <Compile Include="DragonUnlocker.cs" />
     <Compile Include="Afraid.cs" />
     <Compile Include="Effect_Plague.cs" />
-    <Compile Include="FindCodeAnimation.cs" />
     <Compile Include="GeyserTimer.cs" />
     <Compile Include="GroundFixer.cs" />
-    <Compile Include="NuckSpear.cs" />
-    <Compile Include="PBRevive.cs" />
-    <Compile Include="PlagueBite.cs" />
     <Compile Include="PlaguePhases.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReturnableProjectile.cs" />
-    <Compile Include="RotationHandlerDragon.cs" />
     <Compile Include="AKSceneManager.cs" />
     <Compile Include="SecretUnlockDragon.cs" />
     <Compile Include="SinkingPlatforms.cs" />
